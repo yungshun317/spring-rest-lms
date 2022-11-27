@@ -30,9 +30,13 @@ public class StudentRestController {
 
         return students;
     }
-
+    
     @GetMapping("/students/{studentId}")
     public Student getStudent(@PathVariable int studentId) {
+
+        if ((studentId >= students.size()) || (studentId < 0)) {
+            throw new StudentNotFoundException("Student id not found - " + studentId);
+        }
 
         return students.get(studentId);
     }
@@ -58,6 +62,6 @@ public class StudentRestController {
         error.setMessage(exc.getMessage());
         error.setTimeStamp(System.currentTimeMillis());
 
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST)
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 }
